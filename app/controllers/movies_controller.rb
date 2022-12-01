@@ -3,6 +3,14 @@ class MoviesController < ApplicationController
   def index
     # byebug
     @movies = Movie.order(params[:sort_by])
+
+    if params[:ratings]
+      @movies = @movies.where(rating: params[:ratings].keys)
+    else
+      params[:ratings] = Movie.all_ratings
+    end
+
+
   end
 
   def show
