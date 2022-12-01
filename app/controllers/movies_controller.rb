@@ -1,15 +1,19 @@
 # This file is app/controllers/movies_controller.rb
 class MoviesController < ApplicationController
   def index
-    # byebug
+    byebug
     @movies = Movie.order(params[:sort_by])
 
-    if params[:ratings]
-      @movies = @movies.where(rating: params[:ratings].keys)
-    else
-      params[:ratings] = Movie.all_ratings
+    if not params[:ratings]
+      if session[:ratings]
+        params[:ratings] = session[:ratings]
+      else
+        params[:ratings] = Movie.all_ratings
+      end
     end
 
+    session[:ratings] = params[:ratings]
+      @movies = @movies.where(rating: params[:ratings].keys)
 
   end
 
